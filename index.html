@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>VRC Photo Kiosk</title>
+    <script src="app.js" type="module"></script>
+    <link rel="stylesheet" href="./src/assets/styles.css">
+  </head>
+  <body>
+    <div id="sidebar">
+      <h3>Upload</h3>
+      <input type="file" id="upload" accept="image/png" multiple>
+      <h3>Layers</h3>
+      <div id="layersPanel"></div>
+      <h3>Transform</h3>
+      <div class="controls">
+        <input type="hidden" id="posX">
+        <input type="hidden" id="posY">
+        <div class="control">
+		  <div class="label">Scale (X)</div>
+		  <div class="row">
+            <input type="range" id="scaleX" min="0" max="4" step="0.01" value="1">
+            <input type="number" id="scaleX_num" min="0" max="4" step="0.01" value="1">
+		  </div>
+		</div>
+        <div class="control">
+		  <div class="label">Scale (Y)</div>
+		  <div class="row">
+            <input type="range" id="scaleY" min="0" max="4" step="0.01" value="1">
+            <input type="number" id="scaleY_num" min="0" max="4" step="0.01" value="1">
+		  </div>
+		</div>
+        <div class="control">
+          <div class="label">Scale (Proportional)</div>
+		  <div class="row">
+            <input type="range" id="scale" min="0" max="4" step="0.01" value="1">
+            <input type="number" id="scale_num" min="0" max="4" step="0.01" value="1">
+		  </div>
+        </div>
+        <div class="control">
+          <div class="label">Rotation</div>
+		  <div class="row">
+            <input type="range" id="rotation" min="-360" max="360" value="0">
+            <input type="number" id="rotation_num" min="-360" max="360" value="0">
+		  </div>
+        </div>
+      </div>
+      <button onclick="centerLayer()">Center Layer</button>
+      <button onclick="fitToCanvas()">Fit to Canvas</button>
+      <h3>Effects</h3>
+      <div class="controls">
+        <div class="control">
+          <div class="label">Brightness</div>
+          <div class="row">
+            <input type="range" id="brightness" min="0" max="200" value="100">
+            <input type="number" id="brightness_num" min="0" max="200" value="100">
+          </div>
+        </div>
+        <div class="control">
+          <div class="label">Contrast</div>
+          <div class="row">
+            <input type="range" id="contrast" min="0" max="200" value="100">
+            <input type="number" id="contrast_num" min="0" max="200" value="100">
+          </div>
+        </div>
+        <div class="control">
+          <div class="label">Saturation</div>
+          <div class="row">
+            <input type="range" id="saturation" min="0" max="200" value="100">
+            <input type="number" id="saturation_num" min="0" max="200" value="100">
+          </div>
+        </div>
+        <div class="control">
+          <div class="label">Red</div>
+          <div class="row">
+            <input type="range" id="red" min="0" max="200" value="100">
+            <input type="number" id="red_num" min="0" max="200" value="100">
+          </div>
+        </div>
+        <div class="control">
+          <div class="label">Green</div>
+          <div class="row">
+            <input type="range" id="green" min="0" max="200" value="100">
+            <input type="number" id="green_num" min="0" max="200" value="100">
+          </div>
+        </div>
+        <div class="control">
+          <div class="label">Blue</div>
+          <div class="row">
+            <input type="range" id="blue" min="0" max="200" value="100">
+            <input type="number" id="blue_num" min="0" max="200" value="100">
+          </div>
+        </div>
+        <div class="control">
+          <div class="label">Opacity</div>
+          <div class="row">
+            <input type="range" id="opacity" min="0" max="100" value="100">
+            <input type="number" id="opacity_num" min="0" max="100" value="100">
+          </div>
+        </div>
+        <div class="control">
+          <div class="label">Blur</div>
+          <div class="row">
+            <input type="range" id="blur" min="0" max="100" value="0">
+            <input type="number" id="blur_num" min="0" max="100" value="0">
+          </div>
+        </div>
+      </div>
+      <h3>Blend Mode</h3>
+      <select id="blend"></select>
+      <h3>Watermark</h3>
+      <input id="addTextInput" placeholder="Enter text" value="#VRCPhotoKiosk">
+      <input id="addTextColor" type="color" value="#ffffff">
+      <select id="addTextFont">
+        <option value="Arial">Arial</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Tahoma">Tahoma</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Impact">Impact</option>
+      </select>
+      <button id="addTextBtn">Add Text</button>
+      <h3>Presets</h3>
+      <select id="preset"></select>
+      <button id="exportBtn">Export PNG</button>
+    </div>
+    <div id="canvasContainer">
+      <canvas id="canvas" width="1920" height="1080" style="max-height: 100%; max-width: 100%;"></canvas>
+    </div>
+  </body>
+</html>
