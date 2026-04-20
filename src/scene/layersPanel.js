@@ -126,7 +126,7 @@ export function syncUIToLayer(layer) {
         document.getElementById(id + "_num").value = value;
     }
 
-	set("scaleX", layer.scale);
+	set("scaleX", layer.scaleX);
 	set("scaleY", layer.scaleY);
     set("scale", layer.scale);
     set("rotation", (layer.rotation * 180) / Math.PI);
