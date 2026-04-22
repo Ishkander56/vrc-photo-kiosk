@@ -60,10 +60,22 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const renderer = createRenderer(gl, state, canvas);
 	
+	const bindings = [];
+	
 	state.renderer = renderer;
 
     initUploader();
     attachDrag(canvas);
+	
+	canvas.addEventListener('wheel',function(event){
+		var newScale = state.activeLayer.scale + ((event.deltaY >= 0) ? -0.1 : 0.1);
+		newScale = Math.round(newScale * 100)/100
+		state.activeLayer.scale = Math.max(Math.min(newScale, 4), 0);
+		state.renderer.render();
+		syncControlsFromLayer();
+		
+		event.preventDefault();
+	}, false);
 	
 	const scaleSlider = document.getElementById("scale");
 
@@ -160,6 +172,33 @@ window.addEventListener("DOMContentLoaded", () => {
 		number.addEventListener("input", (e) => {
 			update(parseFloat(e.target.value));
 		});
+		
+		bindings.push({ id, key, inverse });
+	}
+	
+	function syncControlsFromLayer() {
+		const layer = state.activeLayer;
+		if (!layer) return;
+
+		bindings.forEach(({ id, key, inverse }) => {
+			const slider = document.getElementById(id);
+			const number = document.getElementById(id + "_num");
+
+			if (!slider || !number) return;
+
+			const value = layer[key];
+			if (value === undefined) return;
+
+			const v = inverse(value);
+
+			slider.value = v;
+			number.value = v;
+		});
+
+		const blendSelect = document.getElementById("blend");
+		if (blendSelect) {
+			blendSelect.value = layer.blend || "source-over";
+		}
 	}
 
 	bindPair("scaleX", "scaleX");
@@ -192,24 +231,16 @@ window.addEventListener("DOMContentLoaded", () => {
 		opt.textContent = BLEND_MODES[key].label;
 		select.appendChild(opt);
 	}
-	
-	function syncBlendFromLayer() {
-		const layer = state.activeLayer;
-		if (!layer) return;
-
-		select.value = layer.blend || "source-over";
-	}
 
 	select.addEventListener("change", () => {
 		const layer = state.activeLayer;
 		if (!layer) return;
 
 		layer.blend = select.value;
-
 		state.renderer.render();
 	});
 
-	syncBlendFromLayer();
+	syncControlsFromLayer();
 
 	const addTextBtn = document.getElementById("addTextBtn");
 	const addTextInput = document.getElementById("addTextInput");
@@ -255,6 +286,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		if (!value) return;
 
 		applyPreset(value);
+		syncControlsFromLayer();
 	});
 
     console.log("App initialized");
